@@ -1,3 +1,9 @@
+# fingertipsR 0.1.2
+
+* fixed issue with rank and some `fingertips_data` queries
+
+* removed dependency on tidyjson as a result of its removal from CRAN
+
 # fingertipsR 0.1.1
 
 * `select_indicators()` allows user to point and click to select indicators
