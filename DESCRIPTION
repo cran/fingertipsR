@@ -1,6 +1,6 @@
 Package: fingertipsR
 Type: Package
-Version: 0.1.2
+Version: 0.1.3
 Title: Fingertips Data for Public Health
 Description: Fingertips (<http://fingertips.phe.org.uk/>) contains data for many indicators of public health in England. The underlying data is now more easily accessible by making use of the API.
 Depends: R (>= 2.10)
@@ -17,9 +17,9 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-09-27 10:47:30 UTC; sebastian.fox
+Packaged: 2017-10-05 10:53:10 UTC; sebastian.fox
 Author: Sebastian Fox [aut, cre],
   Julian Flowers [aut, ctb]
 Maintainer: Sebastian Fox <sebastian.fox@phe.gov.uk>
 Repository: CRAN
-Date/Publication: 2017-09-27 11:21:09 UTC
+Date/Publication: 2017-10-05 11:02:40 UTC

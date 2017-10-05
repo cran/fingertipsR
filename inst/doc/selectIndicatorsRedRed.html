@@ -12,7 +12,7 @@
 
 <meta name="author" content="Seb Fox" />
 
-<meta name="date" content="2017-09-27" />
+<meta name="date" content="2017-10-05" />
 
 <title>Interactively selecting indicators</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Interactively selecting indicators</h1>
 <h4 class="author"><em>Seb Fox</em></h4>
-<h4 class="date"><em>2017-09-27</em></h4>
+<h4 class="date"><em>2017-10-05</em></h4>
 
 
 
@@ -89,52 +89,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## [12] 20201 20601 20301 20602 90284 90832 90285 22001 22002 90244</code></pre>
 <p>The second function to be highlighted in this vignette is <code>fingertips_redred()</code>. This will return a data frame of the data for all of the areas that are performing significantly worse than the chosen benchmark and are deteriorating.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">fingertips_redred</span>(inds, <span class="dt">Comparator =</span> <span class="st">&quot;England&quot;</span>)</code></pre></div>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 4 parsing failures.
-## row # A tibble: 4 x 5 col     row         col   expected     actual         file expected   &lt;int&gt;       &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt; actual 1   437 Denominator an integer 2282241295 &lt;raw vector&gt; file 2   647 Denominator an integer 2308294152 &lt;raw vector&gt; row 3   857 Denominator an integer 2358381053 &lt;raw vector&gt; col 4  1068 Denominator an integer 2398192098 &lt;raw vector&gt;</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 359 parsing failures.
-## row # A tibble: 5 x 5 col     row         col               expected     actual         file expected   &lt;int&gt;       &lt;chr&gt;                  &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt; actual 1     3 Denominator no trailing characters .666666667 &lt;raw vector&gt; file 2     5 Denominator no trailing characters .666666667 &lt;raw vector&gt; row 3     6 Denominator no trailing characters .666666667 &lt;raw vector&gt; col 4     8 Denominator no trailing characters .333333333 &lt;raw vector&gt; expected 5     9 Denominator no trailing characters .333333333 &lt;raw vector&gt;
-## ... ................. ... .................................................................. ........ .................................................................. ...... .................................................................. .... .................................................................. ... .................................................................. ... .................................................................. ........ ..................................................................
-## See problems(...) for more details.</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 198 parsing failures.
-## row # A tibble: 5 x 5 col     row         col               expected actual         file expected   &lt;int&gt;       &lt;chr&gt;                  &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt; actual 1   607 Denominator no trailing characters   .903 &lt;raw vector&gt; file 2   608 Denominator no trailing characters   .256 &lt;raw vector&gt; row 3   609 Denominator no trailing characters   .765 &lt;raw vector&gt; col 4   610 Denominator no trailing characters   .077 &lt;raw vector&gt; expected 5   611 Denominator no trailing characters   .349 &lt;raw vector&gt;
-## ... ................. ... .............................................................. ........ .............................................................. ...... .............................................................. .... .............................................................. ... .............................................................. ... .............................................................. ........ ..............................................................
-## See problems(...) for more details.</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 199 parsing failures.
-## row # A tibble: 5 x 5 col     row         col               expected      actual         file expected   &lt;int&gt;       &lt;chr&gt;                  &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt; actual 1    12 Denominator no trailing characters  .126064021 &lt;raw vector&gt; file 2    13 Denominator no trailing characters .8355684944 &lt;raw vector&gt; row 3    14 Denominator no trailing characters .6907266548 &lt;raw vector&gt; col 4    15 Denominator no trailing characters .0689849006 &lt;raw vector&gt; expected 5    16 Denominator no trailing characters .9433052298 &lt;raw vector&gt;
-## ... ................. ... ................................................................... ........ ................................................................... ...... ................................................................... .... ................................................................... ... ................................................................... ... ................................................................... ........ ...................................................................
-## See problems(...) for more details.</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 492 parsing failures.
-## row # A tibble: 5 x 5 col     row         col               expected      actual         file expected   &lt;int&gt;       &lt;chr&gt;                  &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt; actual 1    12 Denominator no trailing characters  .126064021 &lt;raw vector&gt; file 2    13 Denominator no trailing characters .8355684944 &lt;raw vector&gt; row 3    14 Denominator no trailing characters .6907266548 &lt;raw vector&gt; col 4    15 Denominator no trailing characters .0689849006 &lt;raw vector&gt; expected 5    16 Denominator no trailing characters .9433052298 &lt;raw vector&gt;
-## ... ................. ... ................................................................... ........ ................................................................... ...... ................................................................... .... ................................................................... ... ................................................................... ... ................................................................... ........ ...................................................................
-## See problems(...) for more details.</code></pre>
-<pre><code>## Warning in rbind(names(probs), probs_f): number of columns of result is not
-## a multiple of vector length (arg 1)</code></pre>
-<pre><code>## Warning: 30 parsing failures.
-## row # A tibble: 5 x 5 col     row         col               expected          actual         file expected   &lt;int&gt;       &lt;chr&gt;                  &lt;chr&gt;           &lt;chr&gt;        &lt;chr&gt; actual 1     2 Denominator no trailing characters .97499957592856 &lt;raw vector&gt; file 2     3 Denominator no trailing characters .75394498188557 &lt;raw vector&gt; row 3     4 Denominator no trailing characters  .6253670482037 &lt;raw vector&gt; col 4     5 Denominator no trailing characters .81601491566345 &lt;raw vector&gt; expected 5     6 Denominator no trailing characters .50777105177773 &lt;raw vector&gt;
-## ... ................. ... ....................................................................... ........ ....................................................................... ...... ....................................................................... .... ....................................................................... ... ....................................................................... ... ....................................................................... ........ .......................................................................
-## See problems(...) for more details.</code></pre>
 <p>The <code>geom_tile()</code> function from <code>ggplot2</code> can be used to visualise the poorly performing areas:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df$IndicatorName &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">strwrap</span>(df$IndicatorName, <span class="dv">60</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df<span class="op">$</span>IndicatorName &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="kw">strwrap</span>(df<span class="op">$</span>IndicatorName, <span class="dv">60</span>, 
                                    <span class="dt">simplify =</span> <span class="ot">FALSE</span>), 
                            paste, <span class="dt">collapse=</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)
-p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(IndicatorName, AreaName)) +<span class="st"> </span>
+p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(IndicatorName, AreaName)) <span class="op">+</span><span class="st"> </span>
 <span class="st">        </span><span class="kw">geom_tile</span>(<span class="dt">fill =</span> <span class="st">&quot;darkred&quot;</span>,
-                  <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>) +<span class="st"> </span>
-<span class="st">        </span><span class="kw">theme_minimal</span>() +
+                  <span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">        </span><span class="kw">theme_minimal</span>() <span class="op">+</span>
 <span class="st">        </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">45</span>,
                                          <span class="dt">hjust =</span> <span class="dv">1</span>,
                                          <span class="dt">size =</span> <span class="kw">rel</span>(<span class="fl">0.85</span>)),
-              <span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="kw">rel</span>(<span class="fl">0.9</span>))) +
+              <span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="kw">rel</span>(<span class="fl">0.9</span>))) <span class="op">+</span>
 <span class="st">        </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;Upper Tier Local Authority&quot;</span>,
              <span class="dt">x =</span> <span class="st">&quot;Indicator&quot;</span>)
 <span class="kw">print</span>(p)</code></pre></div>
