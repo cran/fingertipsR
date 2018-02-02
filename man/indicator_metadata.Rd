@@ -4,7 +4,8 @@
 \alias{indicator_metadata}
 \title{Indicator metadata}
 \usage{
-indicator_metadata(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL)
+indicator_metadata(IndicatorID = NULL, DomainID = NULL, ProfileID = NULL,
+  path)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -16,12 +17,17 @@ polarity can vary between profiles therefore if using one of the comparison
 fields it is recommended to complete this field as well as IndicatorID. If
 IndicatorID is populated, ProfileID can be ignored or must be the same
 length as IndicatorID (but can contain NAs).}
+
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 The metadata associated with each indicator/domain/profile identified
 }
 \description{
-Outputs a data frame containing the metadata for selected indicators
+Outputs a data frame containing the metadata for selected indicators. Note, this
+function can take up to a few minutes to run (depending on internet
+connection speeds)
 }
 \examples{
 \dontrun{
@@ -41,11 +47,13 @@ indicator_metadata(ProfileID = 129)}
   \code{\link{deprivation_decile}} for deprivation lookups and
   \code{\link{area_types}} for area types and their parent mappings and
   \code{\link{category_types}} for category lookups and
-  \code{\link{indicator_areatypes}} for indicators by area types lookups
+  \code{\link{indicator_areatypes}} for indicators by area types lookups and
+  \code{\link{indicators_unique}} for unique indicatorids and their names
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{category_types}},
   \code{\link{deprivation_decile}},
   \code{\link{indicator_areatypes}},
+  \code{\link{indicators_unique}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

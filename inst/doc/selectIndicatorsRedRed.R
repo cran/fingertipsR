@@ -23,8 +23,7 @@ df$IndicatorName <- sapply(strwrap(df$IndicatorName, 60,
                                    simplify = FALSE), 
                            paste, collapse= "\n")
 p <- ggplot(df, aes(IndicatorName, AreaName)) + 
-        geom_tile(fill = "darkred",
-                  colour = "white") + 
+        geom_point(colour = "darkred") + 
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 45,
                                          hjust = 1,

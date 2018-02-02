@@ -1,8 +1,13 @@
 #' Fingertips data
 #'
 #' Outputs a data frame of data from
-#' \href{https://fingertips.phe.org.uk/}{Fingertips}
+#' \href{https://fingertips.phe.org.uk/}{Fingertips}. Note, this function can
+#' take up to a few minutes to run (depending on internet connection speeds and
+#' parameter selection).
 #' @return A data frame of data extracted from the Fingertips API
+#' @details Note, polarity of an indicator is not automatically returned (eg,
+#'   whether a low value is good, bad or neither). Use the rank field for this
+#'   to be returned (though it adds a lot of time to the query)
 #' @inheritParams indicators
 #' @param IndicatorID Numeric vector, id of the indicator of interest
 #' @param ProfileID Numeric vector, id of profiles of interest. Indicator
@@ -15,7 +20,7 @@
 #'   extracted; if NULL the function will use the first record for the specified
 #'   `AreaTypeID` from the area_types() function
 #' @param AreaTypeID Numeric vector, the Fingertips ID for the area type;
-#'   default is 102
+#'   default is 102 (Counties and Unitary Authorities)
 #' @param categorytype TRUE or FALSE, determines whether the final table
 #'   includes categorytype data where it exists. Default to FALSE
 #' @param inequalities deprecated: TRUE or FALSE, same as categorytype
@@ -24,20 +29,18 @@
 #'   with the indicator's polarity. 1 is lowest NAs will be bottom and ties will
 #'   return the average position. The total count of areas with a non-NA value
 #'   are returned also in AreaValuesCount
-#' @param stringsAsFactors logical: should character vectors be converted to
-#'   factors? The 'factory-fresh' default is TRUE, but this can be changed by
-#'   setting options(stringsAsFactors = FALSE).
 #' @examples
 #' \dontrun{
 #' # Returns data for the two selected domains at county and unitary authority geography
 #' doms <- c(1000049,1938132983)
-#' fingdata <- fingertips_data(DomainID = doms)#'
+#' fingdata <- fingertips_data(DomainID = doms)
 #'
-#' # Returns data at local authority district geography for the indicator with the id 22401
+#' # Returns data at local authority district geography (AreaTypeID = 101)
+#' # for the indicator with the id 22401
 #' fingdata <- fingertips_data(22401, AreaTypeID = 101)
 #'
 #' # Returns same indicator with different comparisons due to indicator polarity
-#' # differences between profiles
+#' # differences between profiles on the website
 #' # It is recommended to check the website to ensure consistency between your
 #' # data extract here and the polarity required
 #' fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
@@ -55,14 +58,14 @@ fingertips_data <- function(IndicatorID = NULL,
                             categorytype = FALSE,
                             inequalities,
                             rank = FALSE,
-                            stringsAsFactors = default.stringsAsFactors()) {
+                            path) {
 
         if (!missing(inequalities)) {
                 warning("argument inequalities is deprecated; please use categorytype instead.",
                         call. = FALSE)
                 categorytype <- inequalities
         }
-        path <- "https://fingertips.phe.org.uk/api/"
+        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
 
         # ensure there are the correct inputs
@@ -91,7 +94,7 @@ fingertips_data <- function(IndicatorID = NULL,
                 }
         }
 
-        if (!(categorytype == FALSE|categorytype == TRUE)){
+        if (!(categorytype %in% c(TRUE, FALSE))){
                 stop("categorytype input must be TRUE or FALSE")
         }
 
@@ -99,27 +102,27 @@ fingertips_data <- function(IndicatorID = NULL,
         if (is.null(AreaTypeID)) {
                 stop("AreaTypeID must have a value. Use function area_types() to see what values can be used.")
         } else {
-                areaTypes <- area_types()
-                if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID))==TRUE)>0) {
+                areaTypes <- area_types(path = path)
+                if (sum(!(AreaTypeID %in% c(15, areaTypes$AreaTypeID)) == TRUE) > 0) {
                         stop("Invalid AreaTypeID. Use function area_types() to see what values can be used.")
                 } else {
                         if (!is.null(AreaCode)) {
-                                areacodes <- data.frame()
-                                for (i in AreaTypeID) {
-                                        areacodes <- rbind(paste0(path,
-                                                                  "areas/by_area_type?area_type_id=",
-                                                                  i) %>% GET %>% content("text") %>% fromJSON(),
-                                                           areacodes)
-                                }
-
+                                areacodes <- AreaTypeID %>%
+                                        lapply(function(i) {
+                                                paste0(path, "areas/by_area_type?area_type_id=", i) %>%
+                                                        GET %>%
+                                                        content("text") %>%
+                                                        fromJSON
+                                        }) %>%
+                                        bind_rows
                                 if (sum(!(AreaCode %in% c("E92000001", areacodes$Code))==TRUE) > 0) {
-                                        stop("Area code not contained AreaTypeID.")
+                                        stop("Area code not contained in AreaTypeID.")
                                 }
                         }
                         ChildAreaTypeIDs <- AreaTypeID
                 }
                 if (is.null(ParentAreaTypeID)) {
-                        areaTypes <- area_types(AreaTypeID = AreaTypeID) %>%
+                        areaTypes <- area_types(AreaTypeID = AreaTypeID, path = path) %>%
                                 group_by(AreaTypeID) %>%
                                 filter(row_number() == 1)
                         ParentAreaTypeIDs <- areaTypes$ParentAreaTypeID
@@ -136,34 +139,35 @@ fingertips_data <- function(IndicatorID = NULL,
                 if (is.null(ProfileID)) {
                         fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
                                                               ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                              ParentAreaTypeIDs = ParentAreaTypeIDs)
+                                                              ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                              path = path)
                 } else {
                         fingertips_data <- retrieve_indicator(IndicatorIDs = IndicatorIDs,
                                                               ProfileIDs = ProfileIDs,
                                                               ChildAreaTypeIDs = ChildAreaTypeIDs,
-                                                              ParentAreaTypeIDs = ParentAreaTypeIDs)
+                                                              ParentAreaTypeIDs = ParentAreaTypeIDs,
+                                                              path = path)
                 }
         } else {
                 if (!is.null(DomainID)) {
                         fingertips_data <- retrieve_domain(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                            ParentAreaTypeIDs = ParentAreaTypeIDs,
-                                                           DomainIDs = DomainIDs)
+                                                           DomainIDs = DomainIDs,
+                                                           path = path)
                 } else {
                         if (!is.null(ProfileID)) {
                                 fingertips_data <- retrieve_profile(ChildAreaTypeIDs = ChildAreaTypeIDs,
                                                                     ParentAreaTypeIDs = ParentAreaTypeIDs,
-                                                                    ProfileIDs = ProfileIDs)
-                        } else {
-                                stop("One of IndicatorID, DomainID or ProfileID must have an input")
+                                                                    ProfileIDs = ProfileIDs,
+                                                                    path = path)
                         }
                 }
         }
         names(fingertips_data) <- gsub("\\s","",names(fingertips_data))
-        fingertips_data <- data.frame(fingertips_data)
 
         if (rank == TRUE) {
                 inds <- unique(fingertips_data$IndicatorID)
-                polarities <- indicator_metadata(inds) %>%
+                polarities <- indicator_metadata(inds, path) %>%
                         select(IndicatorID, Polarity)
                 fingertips_data <- left_join(fingertips_data, polarities, by = c("IndicatorID" = "IndicatorID")) %>%
                         group_by(IndicatorID, Timeperiod, Sex, Age, CategoryType, Category, AreaType) %>%
@@ -182,11 +186,6 @@ fingertips_data <- function(IndicatorID = NULL,
                 if (categorytype == FALSE) {
                         fingertips_data <- filter(fingertips_data, is.na(CategoryType))
                 }
-        }
-        if (stringsAsFactors == TRUE) {
-                fingertips_data[sapply(fingertips_data, is.character)] <-
-                        lapply(fingertips_data[sapply(fingertips_data, is.character)],
-                               factor)
         }
         return(fingertips_data)
 }

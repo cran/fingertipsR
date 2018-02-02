@@ -7,18 +7,26 @@
 fingertips_redred(Comparator = "England", ...)
 }
 \arguments{
-\item{Comparator}{String, either "England" or "Parent" to determine which field to compare the spot value significance to}
+\item{Comparator}{String, either "England" or "Parent" to determine which
+field to compare the spot value significance to}
 
 \item{...}{Parameters provided to fingertips_data()}
 }
+\value{
+A data frame of data extracted from
+the Fingertips API
+}
 \description{
-Filters data returned by the fingertips_data function for values for areas that are trending significantly
-worse and the spot value is significantly worse than the England value in the latest year of that indicator
-#' @return A data frame of data extracted from the Fingertips API
+Filters data returned by the fingertips_data function for values for areas
+that are trending statistically significantly worse and the spot value is
+significantly worse than the comparator (England or Parent) value in the
+latest year of that indicator
 }
 \examples{
 \dontrun{
 # Returns data for the two selected domains at county and unitary authority geography
 reddata <- fingertips_redred(ProfileID = 26, AreaTypeID = 102)}
-#' @family data extract functions
+}
+\seealso{
+Other data extract functions: \code{\link{fingertips_data}}
 }

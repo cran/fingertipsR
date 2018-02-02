@@ -2,12 +2,11 @@
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
 #' @importFrom readr read_csv
-retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "https://fingertips.phe.org.uk/api/"
+retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
-        for (i in 1:length(IndicatorIDs)) {
+        for (i in seq_len(length(IndicatorIDs))) {
                 IndicatorID <- IndicatorIDs[i]
                 for (ChildAreaTypeID in ChildAreaTypeIDs) {
                         for (ParentAreaTypeID  in ParentAreaTypeIDs) {
@@ -30,7 +29,12 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                                                                   "&include_sortable_time_periods=yes")
                                         }
                                 }
-                                fingertips_data <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types),
+                                fingertips_data <- rbind(dataurl %>%
+                                                                 GET %>%
+                                                                 content("parsed",
+                                                                         type = "text/csv",
+                                                                         encoding = "UTF-8",
+                                                                         col_types = types),
                                                          fingertips_data)
                         }
                 }
@@ -42,9 +46,7 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
 #' @importFrom readr read_csv
-retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "https://fingertips.phe.org.uk/api/"
-        #types <- "icccccccccccnnnnncccci"
+retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
@@ -55,7 +57,12 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
                                                   sprintf("all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s",
                                                           ChildAreaTypeID,ParentAreaTypeID,DomainID),
                                                   "&include_sortable_time_periods=yes")
-                                fingertips_data <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types),
+                                fingertips_data <- rbind(dataurl %>%
+                                                                 GET %>%
+                                                                 content("parsed",
+                                                                         type = "text/csv",
+                                                                         encoding = "UTF-8",
+                                                                         col_types = types),
                                                          fingertips_data)
                         }
                 }
@@ -67,9 +74,7 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
 #' @importFrom utils read.csv
 #' @importFrom httr GET content set_config config
 #' @importFrom readr read_csv
-retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
-        path <- "https://fingertips.phe.org.uk/api/"
-        #types <- "icccccccccccnnnnncccci"
+retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
         types <- "icccccccccccnnnnnnncccci"
         set_config(config(ssl_verifypeer = 0L))
         fingertips_data <- data.frame()
@@ -80,7 +85,12 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs){
                                                   sprintf("all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
                                                           ChildAreaTypeID,ParentAreaTypeID,ProfileID),
                                                   "&include_sortable_time_periods=yes")
-                                fingertips_data <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types),
+                                fingertips_data <- rbind(dataurl %>%
+                                                                 GET %>%
+                                                                 content("parsed",
+                                                                         type = "text/csv",
+                                                                         encoding = "UTF-8",
+                                                                         col_types = types),
                                                          fingertips_data)
                         }
                 }

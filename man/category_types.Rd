@@ -4,7 +4,11 @@
 \alias{category_types}
 \title{Category types}
 \usage{
-category_types()
+category_types(path)
+}
+\arguments{
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 A data frame of category type ids and their descriptions
@@ -12,16 +16,23 @@ A data frame of category type ids and their descriptions
 \description{
 Outputs a data frame of category type ids, their name (along with a short name)
 }
+\examples{
+# Returns the deprivation category types
+cats <- category_types()
+cats[cats$CategoryTypeId == 1,]
+}
 \seealso{
 \code{\link{indicators}} for indicator lookups,
   \code{\link{profiles}} for profile lookups and
   \code{\link{deprivation_decile}} for deprivation decile lookups and
   \code{\link{area_types}} for area type lookups and
-  \code{\link{indicator_areatypes}} for indicators by area types lookups
+  \code{\link{indicator_areatypes}} for indicators by area types lookups and
+  \code{\link{indicators_unique}} for unique indicatorids and their names
 
 Other lookup functions: \code{\link{area_types}},
   \code{\link{deprivation_decile}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
+  \code{\link{indicators_unique}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

@@ -4,7 +4,7 @@
 \alias{area_types}
 \title{Area types}
 \usage{
-area_types(AreaTypeName = NULL, AreaTypeID = NULL)
+area_types(AreaTypeName = NULL, AreaTypeID = NULL, path)
 }
 \arguments{
 \item{AreaTypeName}{Character vector, description of the area type; default
@@ -12,35 +12,45 @@ is NULL}
 
 \item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
 default is NULL}
+
+\item{path}{String; Fingertips API address. Function will default to the
+correct address}
 }
 \value{
 A data frame of area type ids and their descriptions
 }
 \description{
 Outputs a data frame of area type ids, their descriptions, and how they map
-to parent area types
+to parent area types. To understand more on mappings of areas, see the Where
+to start section of the Life Expectancy vignette.
 }
 \examples{
 # Returns a data frame with all levels of area and how they map to one another
 area_types()
 
 # Returns a data frame of county and unitary authority mappings
-area_types("counties")
+ area_types("counties")
 
-# Returns a table of both counties, district and unitary authorities and their respective mappings
+# Returns a data frame of both counties, district
+# and unitary authorities and their respective mappings
 areas <- c("counties","district")
 area_types(areas)
+
+# Uses AreaTypeID to filter area types
+area_types(AreaTypeID = 152)
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
   \code{\link{profiles}} for profile lookups and
   \code{\link{deprivation_decile}} for deprivation decile lookups and
   \code{\link{category_types}} for category lookups and
-  \code{\link{indicator_areatypes}} for indicators by area types lookups
+  \code{\link{indicator_areatypes}} for indicators by area types lookups and
+  \code{\link{indicators_unique}} for unique indicatorids and their names
 
 Other lookup functions: \code{\link{category_types}},
   \code{\link{deprivation_decile}},
   \code{\link{indicator_areatypes}},
   \code{\link{indicator_metadata}},
+  \code{\link{indicators_unique}},
   \code{\link{indicators}}, \code{\link{profiles}}
 }

@@ -1,6 +1,8 @@
 #' Indicator metadata
 #'
-#' Outputs a data frame containing the metadata for selected indicators
+#' Outputs a data frame containing the metadata for selected indicators. Note, this
+#' function can take up to a few minutes to run (depending on internet
+#' connection speeds)
 #' @inheritParams fingertips_data
 #' @examples
 #' \dontrun{
@@ -23,49 +25,63 @@
 #'   \code{\link{deprivation_decile}} for deprivation lookups and
 #'   \code{\link{area_types}} for area types and their parent mappings and
 #'   \code{\link{category_types}} for category lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names
 #' @export
 
 indicator_metadata <- function(IndicatorID = NULL,
                                DomainID = NULL,
-                               ProfileID = NULL) {
+                               ProfileID = NULL,
+                               path) {
         set_config(config(ssl_verifypeer = 0L))
-        types <- "icccccccccccccccccccciccciccccc"
+        types <- "icccccccccccccccccccccccciccccc"
+        if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         if (!(is.null(IndicatorID))) {
                 AllIndicators <- indicators()
                 if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
                         stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
                 }
-                path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_indicator_id?indicator_ids="
+                path <- paste0(path, "indicator_metadata/csv/by_indicator_id?indicator_ids=")
                 dataurl <- paste0(path,
                                   paste(IndicatorID, collapse = "%2C"))
                 indicator_metadata <- dataurl %>%
                         GET %>%
-                        content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types)
+                        content("parsed",
+                                type = "text/csv",
+                                encoding = "UTF-8",
+                                col_types = types)
         } else if (!(is.null(DomainID))) {
                 AllProfiles <- profiles()
                 if (sum(AllProfiles$DomainID %in% DomainID) == 0){
                         stop("DomainID(s) do not exist, use profiles() to identify existing domains")
                 }
-                path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_group_id?group_id="
-                indicator_metadata <- data.frame()
-                for (Domain in DomainID) {
-                        dataurl <- paste0(path, Domain)
-                        indicator_metadata <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types),
-                                                    indicator_metadata)
-                }
+                path <- paste0(path, "indicator_metadata/csv/by_group_id?group_id=")
+                indicator_metadata <- paste0(path, DomainID) %>%
+                        lapply(function(dataurl) {
+                                dataurl %>%
+                                        GET %>%
+                                        content("parsed",
+                                                type = "text/csv",
+                                                encoding = "UTF-8",
+                                                col_types = types)
+                        }) %>%
+                        bind_rows
         } else if (!(is.null(ProfileID))) {
                 AllProfiles <- profiles()
                 if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
                         stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
                 }
-                path <- "https://fingertips.phe.org.uk/api/indicator_metadata/csv/by_profile_id?profile_id="
-                indicator_metadata <- data.frame()
-                for (Profile in ProfileID) {
-                        dataurl <- paste0(path, Profile)
-                        indicator_metadata <- rbind(dataurl %>% GET %>% content("parsed", type = "text/csv", encoding = "UTF-8", col_types = types),
-                                                    indicator_metadata)
-                }
+                path <- paste0(path, "indicator_metadata/csv/by_profile_id?profile_id=")
+                indicator_metadata <- paste0(path, ProfileID) %>%
+                        lapply(function(dataurl) {
+                                dataurl %>%
+                                        GET %>%
+                                        content("parsed",
+                                                type = "text/csv",
+                                                encoding = "UTF-8",
+                                                col_types = types)
+                        }) %>%
+                        bind_rows
         } else {
                 stop("One of IndicatorID, DomainID or ProfileID must be populated")
         }

@@ -1,14 +1,28 @@
-# fingetipsR 0.1.3
+# fingertipsR 0.1.4
+
+* modifications to the fingertipsR paper
+
+* badges added to README
+
+* package approved by ropensci
+
+* fingertips_stats function added to give high level statistics of indicators in Fingertips
+
+* indicator_areatypes now links to API rather than built in dataset
+
+* indicators_unique function provides unique table of indicators
+
+# fingertipsR 0.1.3 (5/10/2017)
 
 * API structure updated to include 99.8 and 95 confidence intervals. Reflected in the outputs of `fingertips_data`. **NOTE** earlier versions of the package will not work anymore because of the underlying change in the API structure
 
-# fingertipsR 0.1.2
+# fingertipsR 0.1.2 (27/9/2017)
 
 * fixed issue with rank and some `fingertips_data` queries
 
 * removed dependency on tidyjson as a result of its removal from CRAN
 
-# fingertipsR 0.1.1
+# fingertipsR 0.1.1 (7/9/2017)
 
 * `select_indicators()` allows user to point and click to select indicators
 
@@ -26,7 +40,7 @@
 
 * A new vignette demonstrating how some of the new functions can be used
 
-# fingertipsR version 0.1.0
+# fingertipsR version 0.1.0 (17/6/2017)
 
 This package allows the user to retrieve tables of:
 

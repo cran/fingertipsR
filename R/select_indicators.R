@@ -1,18 +1,22 @@
 #' Select indicator
 #'
-#' Point and click method of selecting indicators and assigning them to object
+#' Point and click method of selecting indicators and assigning them to object.
+#' Note, this function can take up to a few minutes to run (depending on
+#' internet connection speeds).
 #' @return A numeric vector of indicator IDs
 #' @examples
 #' \dontrun{
 #' # Opens a browser window allowing the user to select indicators by their name, domain and profile
 #' inds <- select_indicators()}
 #' @import miniUI
-#' @importFrom shiny runGadget fillRow h4 observeEvent browserViewer stopApp renderTable tableOutput
+#' @importFrom shiny runGadget fillRow h4 observeEvent browserViewer stopApp
+#'   renderTable tableOutput
 #' @importFrom DT dataTableOutput renderDataTable JS datatable
 #' @importFrom shinycssloaders withSpinner
 #' @export
 
 select_indicators <- function() {
+        # nocov start
         ui <- miniPage(
                 gadgetTitleBar("Select indicators"),
                 fillRow(flex = c(1, 3),
@@ -45,7 +49,7 @@ select_indicators <- function() {
                                   selection = "multiple"
                         ), server = FALSE)
 
-                output$selected = renderTable({
+                output$selected <- renderTable({
                         inds[input$indicators_rows_selected,"IndicatorID", drop = FALSE]
                         },
                         rownames = FALSE)
@@ -59,4 +63,5 @@ select_indicators <- function() {
         }
 
         runGadget(ui, server, viewer = browserViewer())
+        # nocov end
 }
