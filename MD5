@@ -1,9 +1,9 @@
-4ad844cbc48fea22543d15fa5ea8ddcd *DESCRIPTION
+f274b8ab35896f512cae4811d804b298 *DESCRIPTION
 5cf60ff87c4e31023cab478d08430b68 *NAMESPACE
-5a711ee2725b9fba38cc60ea2258e3b4 *NEWS.md
+a3fb86ac6e219c7a04dcd75decc0f707 *NEWS.md
 c1f8d21cd75b5ef057d29bcb8a929a6b *R/area_types.R
 878e085992281df042f05a98321d7ce7 *R/deprivation_decile.R
-e156fdcc950dc97fb31eacb86e892b1f *R/enhancements.R
+6406abf2a58d635a4f8240307bc6655d *R/enhancements.R
 abe16c061ebaef624b1c507626c759f3 *R/fingertipsR.R
 92a7195d95edb2757a7aa3addc993791 *R/fingertips_data.R
 8d995cae6f7127a4c19ce8154f66f913 *R/indicator_metadata.R
@@ -15,7 +15,7 @@ fd9968202e7776a7185fc948e4d519ff *README.md
 9daff2f233206196fa85a96e859ddf11 *build/vignette.rds
 d24d8b741d3477baa1de1220ab996f5c *inst/doc/lifeExpectancy.R
 7faa0946f58aa4c2df2905e6c40d191a *inst/doc/lifeExpectancy.Rmd
-f2fe67ac1e5136057229705f6e9b9303 *inst/doc/lifeExpectancy.html
+fef7ee99501216735a43917a322c085e *inst/doc/lifeExpectancy.html
 0a3301f395baca73ebf398c55f841bf2 *inst/doc/selectIndicatorsRedRed.R
 dededbc50e63a01bb702045626e4db2c *inst/doc/selectIndicatorsRedRed.Rmd
 92d254c05d4d2d92c1ad8793e6cb6504 *inst/doc/selectIndicatorsRedRed.html
