@@ -22,11 +22,14 @@
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
 #'   \code{\link{profiles}} for profile lookups,
-#'   \code{\link{deprivation_decile}} for deprivation lookups and
-#'   \code{\link{area_types}} for area types and their parent mappings and
-#'   \code{\link{category_types}} for category lookups and
-#'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
-#'   \code{\link{indicators_unique}} for unique indicatorids and their names
+#'   \code{\link{deprivation_decile}} for deprivation lookups,
+#'   \code{\link{area_types}} for area types and their parent mappings,
+#'   \code{\link{category_types}} for category lookups,
+#'   \code{\link{indicator_areatypes}} for indicators by area types lookups,
+#'   \code{\link{indicators_unique}} for unique indicatorids and their names,
+#'   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
+#'   \code{\link{indicator_order}} for the order indicators are presented on the
+#'   Fingertips website within a Domain
 #' @export
 
 indicator_metadata <- function(IndicatorID = NULL,
@@ -37,7 +40,7 @@ indicator_metadata <- function(IndicatorID = NULL,
         types <- "icccccccccccccccccccccccciccccc"
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         if (!(is.null(IndicatorID))) {
-                AllIndicators <- indicators()
+                AllIndicators <- indicators(path = path)
                 if (sum(AllIndicators$IndicatorID %in% IndicatorID) == 0){
                         stop("IndicatorID(s) do not exist, use indicators() to identify existing indicators")
                 }

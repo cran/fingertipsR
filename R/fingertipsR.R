@@ -43,4 +43,9 @@ globalVariables(c("Id",
                   "areatypes_by_indicators",
                   "ProfileID",
                   "AreaTypeID",
-                  "combined"))
+                  "combined",
+                  "areacheck",
+                  "nearest_neighbours",
+                  "Code",
+                  "IID",
+                  "Sequence"))

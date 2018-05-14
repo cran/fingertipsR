@@ -1,4 +1,10 @@
-# fingertipsR 0.1.5
+# fingertipsR 0.1.6 (01/05/2018)
+
+* nearest_neighbours() function added
+
+* indicator_order() function added
+
+# fingertipsR 0.1.5 (06/02/2018)
 
 * corrected fingertips_stats to give accurate stats
 
