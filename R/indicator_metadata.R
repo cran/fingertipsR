@@ -17,7 +17,8 @@
 #' indicator_metadata(ProfileID = 129)}
 #' @return The metadata associated with each indicator/domain/profile identified
 #' @importFrom utils read.csv
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @importFrom readr read_csv
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -48,13 +49,13 @@ indicator_metadata <- function(IndicatorID = NULL,
                 dataurl <- paste0(path,
                                   paste(IndicatorID, collapse = "%2C"))
                 indicator_metadata <- dataurl %>%
-                        GET %>%
+                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                         content("parsed",
                                 type = "text/csv",
                                 encoding = "UTF-8",
                                 col_types = types)
         } else if (!(is.null(DomainID))) {
-                AllProfiles <- profiles()
+                AllProfiles <- profiles(path = path)
                 if (sum(AllProfiles$DomainID %in% DomainID) == 0){
                         stop("DomainID(s) do not exist, use profiles() to identify existing domains")
                 }
@@ -62,7 +63,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- paste0(path, DomainID) %>%
                         lapply(function(dataurl) {
                                 dataurl %>%
-                                        GET %>%
+                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                         content("parsed",
                                                 type = "text/csv",
                                                 encoding = "UTF-8",
@@ -70,7 +71,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                         }) %>%
                         bind_rows
         } else if (!(is.null(ProfileID))) {
-                AllProfiles <- profiles()
+                AllProfiles <- profiles(path = path)
                 if (sum(AllProfiles$ProfileID %in% ProfileID) == 0){
                         stop("ProfileID(s) do not exist, use profiles() to identify existing profiles")
                 }
@@ -78,7 +79,7 @@ indicator_metadata <- function(IndicatorID = NULL,
                 indicator_metadata <- paste0(path, ProfileID) %>%
                         lapply(function(dataurl) {
                                 dataurl %>%
-                                        GET %>%
+                                        GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                                         content("parsed",
                                                 type = "text/csv",
                                                 encoding = "UTF-8",

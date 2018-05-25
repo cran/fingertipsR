@@ -1,4 +1,10 @@
-# fingertipsR 0.1.6 (01/05/2018)
+# fingertipsR 0.1.7
+
+* nearest_neighbours() modified to include `measure` parameter - so user can get 15 CIPFA nn for upper tier local authorities
+
+* data retrieval functions now use local proxy settings
+
+# fingertipsR 0.1.6 (03/05/2018)
 
 * nearest_neighbours() function added
 

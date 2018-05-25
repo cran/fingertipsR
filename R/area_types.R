@@ -27,7 +27,8 @@
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
 #' @importFrom stats complete.cases
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @export
 #' @family lookup functions
 #' @seealso \code{\link{indicators}} for indicator lookups,
@@ -47,7 +48,7 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         parentAreas <- paste0(path,"area_types/parent_area_types") %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON
         area_types <- parentAreas[,c("Id", "Name")]
@@ -88,7 +89,8 @@ area_types  <- function(AreaTypeName = NULL, AreaTypeID = NULL, path){
 #' @return A data frame of category type ids and their descriptions
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @examples
 #' # Returns the deprivation category types
 #' cats <- category_types()
@@ -109,7 +111,7 @@ category_types <- function(path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
         set_config(config(ssl_verifypeer = 0L))
         category_types <- paste0(path,"category_types") %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON %>%
                 pull(Categories) %>%
@@ -130,7 +132,8 @@ category_types <- function(path) {
 #' @inheritParams indicators
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @examples
 #' indicator_areatypes()
 #' @export
@@ -163,7 +166,7 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
         }
         set_config(config(ssl_verifypeer = 0L))
         areatypes_by_indicators <- path %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON %>%
                 as_tibble
@@ -176,9 +179,12 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' Outputs a character vector of similar areas for given area. Currently returns
 #' similar areas for Clinical Commissioning Groups (old and new) based on
 #' \href{https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/}{NHS
-#' England's similar CCG explorer tool} or upper tier local authorities based on
+#' England's similar CCG explorer tool} or lower and upper tier local
+#' authorities based on
 #' \href{https://www.cipfastats.net/resources/nearestneighbours/}{CIPFA's
-#' Nearest Neighbours Model}
+#' Nearest Neighbours Model} or upper tier local authorities based on
+#' \href{https://www.gov.uk/government/publications/local-authority-interactive-tool-lait}{Children's
+#' services statistical neighbour benchmarking tool}
 #'
 #' @details Use AreaTypeID = 102 for the AreaTypeID related to Children's
 #'   services statistical neighbours
@@ -186,10 +192,14 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #' @param AreaTypeID AreaTypeID of the nearest neighbours (see
 #'   \code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
 #'   101, 102, 152, and 153
+#' @param measure string; when AreaTypeID = 102 measure must be either "CIPFA"
+#'   for CIPFA local authority nearest neighbours or "CSSN" for Children's
+#'   services statistical neighbours
 #' @inheritParams fingertips_data
 #' @import dplyr
 #' @importFrom jsonlite fromJSON
-#' @importFrom httr GET content set_config config
+#' @importFrom httr GET content set_config config use_proxy
+#' @importFrom curl ie_get_proxy_for_url
 #' @examples
 #' nearest_neighbours(AreaCode = "E38000003", AreaTypeID = 153)
 #' @export
@@ -203,31 +213,45 @@ indicator_areatypes <- function(IndicatorID, AreaTypeID, path) {
 #'   \code{\link{indicator_areatypes}} for indicators by area types lookups and
 #'   \code{\link{indicator_order}} for the order indicators are presented on the
 #'   Fingertips website within a Domain
-nearest_neighbours <- function(AreaCode, AreaTypeID = 102, path) {
+nearest_neighbours <- function(AreaCode, AreaTypeID = 101, measure, path) {
         if (missing(path)) path <- "https://fingertips.phe.org.uk/api/"
-        val <- case_when(
-                AreaTypeID == 101 ~ 1,
-                AreaTypeID == 153 ~ 2,
-                AreaTypeID == 102 ~ 3,
-                AreaTypeID == 152 ~ 4,
-                TRUE ~ -1
-        )
+        if (AreaTypeID == 102) {
+                if (missing(measure)) {
+                        stop("If using AreaTypeID = 102, you must specify measure (CIPFA or CSSN)")
+                } else if (!(measure %in% c("CIPFA","CSSN"))) {
+                        stop("Measure must be either CIPFA or CSSN")
+                }
+        }
+        if (missing(measure)) measure <- NA
+        if (AreaTypeID == 101) {
+                val <- 1
+        } else if (AreaTypeID == 153) {
+                val <- 2
+        } else if (AreaTypeID == 102 & measure == "CSSN") {
+                val <- 3
+        } else if (AreaTypeID == 102 & measure == "CIPFA") {
+                val <- 1
+        } else if (AreaTypeID == 152) {
+                val <- 4
+        } else {
+                val <- NA
+        }
         areacheck <- paste0(path,
                             sprintf("parent_to_child_areas?parent_area_type_id=%s",
                                     AreaTypeID)) %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON %>%
                 names
         areacheck <- areacheck[grepl("^E", areacheck)]
         if (!(AreaCode %in% areacheck)) stop(paste0(AreaCode, " not in AreaTypeID = ", AreaTypeID))
-        if (val == -1) stop("AreaTypeID must be one of 101, 102, 152 or 153")
+        if (is.na(val)) stop("AreaTypeID must be one of 101, 102, 152 or 153")
         path <- paste0(path,
                        sprintf("areas/by_parent_area_code?area_type_id=%s&parent_area_code=nn-%s-%s",
                                AreaTypeID, val, AreaCode))
         set_config(config(ssl_verifypeer = 0L))
         nearest_neighbours <- path %>%
-                GET %>%
+                GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text") %>%
                 fromJSON %>%
                 pull(Code)
