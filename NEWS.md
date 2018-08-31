@@ -1,4 +1,12 @@
-# fingertipsR 0.1.8
+# fingertipsR 0.1.9
+
+* New field "Compared to goal" in `fingertips_data()`
+
+* New field name "Compared to [AreaType]" in `fingertips_data()`
+
+* Improved tests
+
+# fingertipsR 0.1.8 (05/07/2018)
 
 * fingertips_data function adapted for "New data" field in API
 
