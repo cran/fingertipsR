@@ -1,79 +1,91 @@
 #' @importFrom httr set_config config
 retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        types <- "icccccccccccnnnnnnnccccic"
-        set_config(config(ssl_verifypeer = 0L))
-        fingertips_data <- data.frame()
-        for (i in seq_len(length(IndicatorIDs))) {
-                IndicatorID <- IndicatorIDs[i]
-                for (ChildAreaTypeID in ChildAreaTypeIDs) {
-                        for (ParentAreaTypeID  in ParentAreaTypeIDs) {
-                                if (missing(ProfileIDs)){
-                                        dataurl <- paste0(path,
-                                                          sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
-                                                                  IndicatorID, ChildAreaTypeID, ParentAreaTypeID),
-                                                          "&include_sortable_time_periods=yes")
-                                } else {
-                                        ProfileID <- ProfileIDs[i]
-                                        if (is.na(ProfileID)) {
-                                                dataurl <- paste0(path,
-                                                                  sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s",
-                                                                          IndicatorID,ChildAreaTypeID,ParentAreaTypeID),
-                                                                  "&include_sortable_time_periods=yes")
-                                        } else {
-                                                dataurl <- paste0(path,
-                                                                  sprintf("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
-                                                                          IndicatorID, ChildAreaTypeID, ParentAreaTypeID, ProfileID),
-                                                                  "&include_sortable_time_periods=yes")
-                                        }
-                                }
-                                new_data <- new_data_formatting(dataurl)
-                                fingertips_data <- rbind(new_data,
-                                                         fingertips_data)
-                        }
-                }
+        if (missing(ProfileIDs)) {
+                ProfileIDs <- ""
+                profileID_bit <- ""
+        } else if (is.na(ProfileIDs)) {
+                ProfileIDs <- ""
+                profileID_bit <- ""
+        } else {
+                profileID_bit <- "&profile_id=%s"
         }
+        fd <- expand.grid(IndicatorIDs = IndicatorIDs,
+                             ProfileIDs = ProfileIDs,
+                             ChildAreaTypeIDs = ChildAreaTypeIDs,
+                             ParentAreaTypeIDs = ParentAreaTypeIDs,
+                             path = path,
+                             profileID_bit = profileID_bit)
+
+        set_config(config(ssl_verifypeer = 0L))
+
+        get_data <- function(x) {
+                if (!(x$ProfileIDs == "" | is.na(x$ProfileIDs))) {
+                        x$profileID_bit <- sprintf(as.character(x$profileID_bit), x$ProfileIDs)
+                }
+                dataurl <- paste0("all_data/csv/by_indicator_id?indicator_ids=%s&child_area_type_id=%s&parent_area_type_id=%s", x$profileID_bit)
+                dataurl <- paste0(x$path,
+                                  sprintf(dataurl, x$IndicatorIDs, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs),
+                                  "&include_sortable_time_periods=yes")
+                y <- new_data_formatting(dataurl)
+                y
+        }
+
+        dd <- by(fd,
+                 list(fd$IndicatorIDs, fd$ProfileIDs, fd$ChildAreaTypeIDs,
+                      fd$ParentAreaTypeIDs, fd$profileID_bit),
+                 get_data)
+        fingertips_data <- do.call("rbind", dd)
         return(fingertips_data)
 }
 
+
 #' @importFrom httr set_config config
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        types <- "icccccccccccnnnnnnnccccic"
+        fd <- expand.grid(DomainIDs = DomainIDs,
+                          ChildAreaTypeIDs = ChildAreaTypeIDs,
+                          ParentAreaTypeIDs = ParentAreaTypeIDs,
+                          path = path)
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_data <- data.frame()
-        for (DomainID in DomainIDs) {
-                for (ChildAreaTypeID in ChildAreaTypeIDs) {
-                        for (ParentAreaTypeID  in ParentAreaTypeIDs) {
-                                dataurl <- paste0(path,
-                                                  sprintf("all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s",
-                                                          ChildAreaTypeID,ParentAreaTypeID,DomainID),
-                                                  "&include_sortable_time_periods=yes")
-                                new_data <- new_data_formatting(dataurl)
-                                fingertips_data <- rbind(new_data,
-                                                         fingertips_data)
-                        }
-                }
+        get_data <- function(x) {
+                dataurl <- "all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s"
+                dataurl <- paste0(x$path,
+                                  sprintf(dataurl, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs, x$DomainIDs),
+                                  "&include_sortable_time_periods=yes")
+                y <- new_data_formatting(dataurl)
+                y
         }
+
+        dd <- by(fd,
+                 list(fd$DomainIDs,
+                      fd$ChildAreaTypeIDs,
+                      fd$ParentAreaTypeIDs),
+                 get_data)
+        fingertips_data <- do.call("rbind", dd)
         return(fingertips_data)
 }
 
 #' @importFrom httr set_config config
 retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        types <- "icccccccccccnnnnnnnccccic"
+        fd <- expand.grid(ProfileIDs = ProfileIDs,
+                          ChildAreaTypeIDs = ChildAreaTypeIDs,
+                          ParentAreaTypeIDs = ParentAreaTypeIDs,
+                          path = path)
         set_config(config(ssl_verifypeer = 0L))
-        fingertips_data <- data.frame()
-        for (ProfileID in ProfileIDs) {
-                for (ChildAreaTypeID in ChildAreaTypeIDs) {
-                        for (ParentAreaTypeID  in ParentAreaTypeIDs) {
-                                dataurl <- paste0(path,
-                                                  sprintf("all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s",
-                                                          ChildAreaTypeID,ParentAreaTypeID,ProfileID),
-                                                  "&include_sortable_time_periods=yes")
-                                new_data <- new_data_formatting(dataurl)
-                                fingertips_data <- rbind(new_data,
-                                                         fingertips_data)
-                        }
-                }
+        get_data <- function(x) {
+                dataurl <- "all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s"
+                dataurl <- paste0(x$path,
+                                  sprintf(dataurl, x$ChildAreaTypeIDs, x$ParentAreaTypeIDs, x$ProfileIDs),
+                                  "&include_sortable_time_periods=yes")
+                y <- new_data_formatting(dataurl)
+                y
         }
+
+        dd <- by(fd,
+                 list(fd$ProfileIDs,
+                      fd$ChildAreaTypeIDs,
+                      fd$ParentAreaTypeIDs),
+                 get_data)
+        fingertips_data <- do.call("rbind", dd)
         return(fingertips_data)
 }
 
@@ -90,7 +102,6 @@ new_data_formatting <- function(dataurl) {
                                sep = ",",
                                fill = TRUE,
                                header = TRUE,
-                               #quote = "",
                                stringsAsFactors = FALSE,
                                check.names = FALSE)
         names(new_data)[names(new_data)=="Target data"] <- "Compared to goal"
