@@ -1,4 +1,10 @@
-# fingertipsR 0.2.0
+# fingertipsR 0.2.1
+
+ * `deprivation_decile()` for `AreaTypeID = 7` (General Practice) now only contains 2015 deprivation deciles. 2010 to 2012 have been removed
+
+* bug fix around entering vectors of `IndicatorID`s and `ProfileID`s into `fingertips_data()` function
+
+# fingertipsR 0.2.0 (12/11/2018)
 
 * `select_indicators()` fixed for selecting more than one indicator
 

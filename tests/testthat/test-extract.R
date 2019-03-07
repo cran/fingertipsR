@@ -5,7 +5,7 @@ context("fingertips data extract")
 
 df1 <- fingertips_data(IndicatorID = 90616, AreaTypeID = 152)
 df2 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, DomainID = 1938133106))
-df3 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = 135))
+df3 <- suppressWarnings(fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = 20))
 df4 <- fingertips_data(DomainID = 1938132767)
 df5 <- fingertips_data(ProfileID = 132)
 df6 <- fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = NA)
@@ -41,6 +41,10 @@ test_that("warning messages work", {
                        "AreaTypeID not a child of ParentAreaTypeID\\. There may be duplicate values in data\\. Use function area_types\\(\\) to see mappings of area type to parent area type\\.")
         expect_warning(fingertips_data(DomainID = 1938133152, ProfileID = 76),
                        "DomainID is complete so ProfileID is ignored")
+        expect_warning(fingertips_data(IndicatorID = c(93105, 93107),
+                                       ProfileID = c(NA, 143),
+                                       AreaTypeID = 8),
+                       "ProfileID can not contain NAs - all ProfileIDs are ignored")
 })
 
 test_that(paste("number of fields returned by fingertips_data function are", ncols), {

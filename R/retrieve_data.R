@@ -3,18 +3,20 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
         if (missing(ProfileIDs)) {
                 ProfileIDs <- ""
                 profileID_bit <- ""
-        } else if (is.na(ProfileIDs)) {
+        } else if (any(is.na(ProfileIDs))) {
                 ProfileIDs <- ""
                 profileID_bit <- ""
+                warning("ProfileID can not contain NAs - all ProfileIDs are ignored")
         } else {
                 profileID_bit <- "&profile_id=%s"
         }
-        fd <- expand.grid(IndicatorIDs = IndicatorIDs,
-                             ProfileIDs = ProfileIDs,
-                             ChildAreaTypeIDs = ChildAreaTypeIDs,
-                             ParentAreaTypeIDs = ParentAreaTypeIDs,
-                             path = path,
-                             profileID_bit = profileID_bit)
+        fd <- data.frame(IndicatorIDs = IndicatorIDs,
+                         ProfileIDs = ProfileIDs,
+                         ChildAreaTypeIDs = ChildAreaTypeIDs,
+                         ParentAreaTypeIDs = ParentAreaTypeIDs,
+                         path = path,
+                         profileID_bit = profileID_bit) %>%
+                unique()
 
         set_config(config(ssl_verifypeer = 0L))
 
@@ -41,10 +43,10 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
 
 #' @importFrom httr set_config config
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        fd <- expand.grid(DomainIDs = DomainIDs,
-                          ChildAreaTypeIDs = ChildAreaTypeIDs,
-                          ParentAreaTypeIDs = ParentAreaTypeIDs,
-                          path = path)
+        fd <- data.frame(DomainIDs = DomainIDs,
+                         ChildAreaTypeIDs = ChildAreaTypeIDs,
+                         ParentAreaTypeIDs = ParentAreaTypeIDs,
+                         path = path)
         set_config(config(ssl_verifypeer = 0L))
         get_data <- function(x) {
                 dataurl <- "all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s"
@@ -66,10 +68,10 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
 
 #' @importFrom httr set_config config
 retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        fd <- expand.grid(ProfileIDs = ProfileIDs,
-                          ChildAreaTypeIDs = ChildAreaTypeIDs,
-                          ParentAreaTypeIDs = ParentAreaTypeIDs,
-                          path = path)
+        fd <- data.frame(ProfileIDs = ProfileIDs,
+                         ChildAreaTypeIDs = ChildAreaTypeIDs,
+                         ParentAreaTypeIDs = ParentAreaTypeIDs,
+                         path = path)
         set_config(config(ssl_verifypeer = 0L))
         get_data <- function(x) {
                 dataurl <- "all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s"
@@ -94,7 +96,7 @@ retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, pa
 #' @importFrom curl ie_get_proxy_for_url
 #' @importFrom utils read.delim
 new_data_formatting <- function(dataurl) {
-        df_string  <- dataurl %>%
+        df_string  <- add_timestamp(dataurl) %>%
                 GET(use_proxy(ie_get_proxy_for_url(.), username = "", password = "", auth = "ntlm")) %>%
                 content("text")
         new_data <- read.delim(text = df_string,
