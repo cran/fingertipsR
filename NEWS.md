@@ -1,10 +1,14 @@
-# fingertipsR 0.2.1
+# fingertipsR 0.2.2
+
+* no changes from a user perspective to previous versions
+
+# fingertipsR 0.2.1 (2019-03-07)
 
  * `deprivation_decile()` for `AreaTypeID = 7` (General Practice) now only contains 2015 deprivation deciles. 2010 to 2012 have been removed
 
 * bug fix around entering vectors of `IndicatorID`s and `ProfileID`s into `fingertips_data()` function
 
-# fingertipsR 0.2.0 (12/11/2018)
+# fingertipsR 0.2.0 (2018-11-12)
 
 * `select_indicators()` fixed for selecting more than one indicator
 
@@ -16,7 +20,7 @@
 
 * IndicatorName field in `indicators()` table returns short name rather than long name
 
-# fingertipsR 0.1.9
+# fingertipsR 0.1.9 (2018-08-31)
 
 * New field "Compared to goal" in `fingertips_data()`
 
@@ -24,7 +28,7 @@
 
 * Improved tests
 
-# fingertipsR 0.1.8 (05/07/2018)
+# fingertipsR 0.1.8 (2018-07-05)
 
 * fingertips_data function adapted for "New data" field in API
 

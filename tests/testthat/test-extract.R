@@ -12,11 +12,15 @@ df6 <- fingertips_data(IndicatorID = 90616, AreaTypeID = 152, ProfileID = NA)
 df7 <- fingertips_data(DomainID = 1938132767, AreaCode = "E06000015")
 df8 <- fingertips_data(DomainID = 1938132767, rank = TRUE)
 
+inds <- c(93081, 93275, 93094)
+df9 <- fingertips_data(inds, ProfileID = 143, AreaTypeID = 3)
+
 ncols <- 26
 
+remove_col <- match("Newdata", names(df1))
 test_that("the data returned are the same despite different inputs", {
         expect_equal(df1, df2)
-        expect_equal(df1, df3)
+        expect_equal(df1[,-remove_col], df3[,-remove_col])
 })
 
 test_that("error messages work", {
@@ -54,4 +58,6 @@ test_that(paste("number of fields returned by fingertips_data function are", nco
         expect_equal(ncol(df6), ncols)
         expect_equal(ncol(df7), ncols)
         expect_equal(ncol(df8), ncols + 3)
+        expect_equal(ncol(df9), ncols)
+
 })
