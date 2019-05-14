@@ -1,4 +1,8 @@
-# fingertipsR 0.2.2
+# fingertipsR 0.2.3
+
+* no changes from a user perspective to previous versions
+
+# fingertipsR 0.2.2 (2019-04-08)
 
 * no changes from a user perspective to previous versions
 
