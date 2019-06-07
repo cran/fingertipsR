@@ -1,3 +1,11 @@
+# fingertipsR 0.2.6
+
+* fixed `indicator_order()` function
+
+* `nearest_neighbours()` now allows AreaTypeID 154 (CCG unchanged plus new 2018), but no longer allows AreaTypeID 153
+
+* `nearest_neighbours()` function has been fixed
+
 # fingertipsR 0.2.4
 
 * no changes from a user perspective to previous versions
