@@ -1,5 +1,9 @@
-# fingertipsR 0.2.7
- * Added option for `AreaTypeId = "All"` in `fingertips_data()`
+# fingertipsR 0.2.8
+
+* functions will provide informative message when they fail because of no response from the API
+
+# fingertipsR 0.2.7 (2019-07-18)
+ * Added option for `AreaTypeID = "All"` in `fingertips_data()`
  * Added `ProfileID` argument to `area_types()` function
  * `category_types()` returns field called `CategoryType` which is joinable to `fingertips_data()` output when `categorytype = TRUE`
  * Added a retry function to handle occasions when the API times out when it shouldn't

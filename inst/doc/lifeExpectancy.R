@@ -28,7 +28,7 @@ pander::pandoc.table(tail(data),
 
 ## ----refine variables----------------------------------------------------
 cols <- c("IndicatorID", "AreaCode", "Sex", "Timeperiod", "Value")
-data <- data[data$AreaType == "County & UA" & data$Timeperiod == "2012 - 14", cols]
+data <- data[data$AreaType == "County & UA (pre 4/19)" & data$Timeperiod == "2012 - 14", cols]
 
 
 ## ----deprivation---------------------------------------------------------

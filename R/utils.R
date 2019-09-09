@@ -22,3 +22,28 @@ add_timestamp <- function(api_path) {
 }
 
 
+default_api <- 'https://fingertips.phe.org.uk/api/'
+
+#' Get the default fingertips API endpoint
+#' @export
+#' @return A character string with the HTTP URL of the Fingertips API
+fingertips_endpoint <- function() default_api
+
+#' Check if the given Fingertips API endpoint is available
+#' @param endpoint string, the API base URL to check
+#' @return \code{TRUE} if the API is available, otherwise \code{stop()} is called.
+fingertips_ensure_api_available <- function(endpoint = fingertips_endpoint()) {
+        code <- FALSE
+        try({
+                code <- httr::status_code(httr::GET(endpoint))
+        }, silent = TRUE)
+
+        if (code == 200) return(TRUE)
+
+        errtext <- paste('The API is currently unavailable')
+
+        if (endpoint == default_api) {
+                errtext <- c(errtext, 'If the issue persists, please notify profilefeedback@phe.gov.uk')
+        }
+        stop(paste(errtext, collapse='\n  '), call. = FALSE)
+}
