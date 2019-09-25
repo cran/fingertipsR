@@ -1,6 +1,6 @@
-d962d40edefe80e3d40481e49ff80189 *DESCRIPTION
+246ba462c7632a3d211da601804e0dc1 *DESCRIPTION
 e483bddc120689503249059743fbaf9d *NAMESPACE
-dffaa83b31c48edacf9204652fe70c3a *NEWS.md
+a439c777e151dfb0eb6d635836396e68 *NEWS.md
 7379fb3266a9179deb360d2f6c633e86 *R/area_types.R
 e41dc55967828a070e0f7e7e64ba162e *R/deprivation_decile.R
 5cdcc4c8bbc1f53af47ac74959e6749d *R/enhancements.R
@@ -11,12 +11,12 @@ e41dc55967828a070e0f7e7e64ba162e *R/deprivation_decile.R
 0ecd0b808726e7fbc92fc512a3e380a7 *R/profiles.R
 b042b7e36a88f6ef54868b877b67b651 *R/retrieve_data.R
 179405cdd1d0f76a1f6b659f1625359d *R/select_indicators.R
-ffaddbb622c4a3608f18e88a2f91210c *R/utils.R
+33a77392dca8bec5cf76be8fbf4babab *R/utils.R
 ddd25a1cc6188279e3df47224197dc51 *README.md
 6875b1435130f99a263591ab15b3198f *build/vignette.rds
 b553319393b88a6e5f7c106817523b9c *inst/doc/lifeExpectancy.R
 8cac1d839224c4bb7e6c0d4d74c8a925 *inst/doc/lifeExpectancy.Rmd
-bbff3249c990e474f7ead9d956782938 *inst/doc/lifeExpectancy.html
+4f8c4a1711038c090773aec07cd69599 *inst/doc/lifeExpectancy.html
 0a3301f395baca73ebf398c55f841bf2 *inst/doc/selectIndicatorsRedRed.R
 dededbc50e63a01bb702045626e4db2c *inst/doc/selectIndicatorsRedRed.Rmd
 9268fdfd82e60f9fc140e2347a6f6e68 *inst/doc/selectIndicatorsRedRed.html
@@ -39,8 +39,8 @@ c900ca4caf174478e38665417b7b01c0 *man/indicators_unique.Rd
 c67e54d56fa7fcf0bdd7862e899d7431 *man/nearest_neighbours.Rd
 79ee410494ec05cf772ac282fdf184ec *man/profiles.Rd
 50b0a2242f56fa5eeec2dd5930248f46 *man/select_indicators.Rd
-31c83229acd025d32a1b8c6214470478 *tests/a-m.R
-750c954a4d65dd3796b6e334f5ce0165 *tests/n-z.R
+8487dcadd0a0107a7c78b537b7758df5 *tests/a-e.R
+e71b2cb6387324e19873c42abcefc3e6 *tests/f-z.R
 bfeaf4df0883cb8662233f6f3be84cdb *tests/testthat/test-area_types.R
 df639f437a0c7af97a3077d0f456ddba *tests/testthat/test-deprivation.R
 f266bf55852aecb3160fffe289e7e7c6 *tests/testthat/test-enhancements.R
