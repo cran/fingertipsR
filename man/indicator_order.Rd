@@ -9,10 +9,9 @@ indicator_order(DomainID, AreaTypeID, ParentAreaTypeID, path)
 \arguments{
 \item{DomainID}{Numeric vector, id of domains of interest}
 
-\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is 102 (Counties and Unitary Authorities). This argument also
-accepts "All", which returns data for all available area types for the
-indicator(s)}
+\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type. This
+argument accepts "All", which returns data for all available area
+types for the indicator(s), though this can take a long time to run}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified
@@ -43,13 +42,15 @@ indicator_order(DomainID = 1938133161, AreaTypeID = 102, ParentAreaTypeID = 6)}
   \code{\link{indicator_areatypes}} for indicators by area types lookups and
   \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area
 
-Other lookup functions: \code{\link{area_types}},
-  \code{\link{category_types}},
-  \code{\link{deprivation_decile}},
-  \code{\link{indicator_areatypes}},
-  \code{\link{indicator_metadata}},
-  \code{\link{indicators_unique}},
-  \code{\link{indicators}},
-  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
+Other lookup functions: 
+\code{\link{area_types}()},
+\code{\link{category_types}()},
+\code{\link{deprivation_decile}()},
+\code{\link{indicator_areatypes}()},
+\code{\link{indicator_metadata}()},
+\code{\link{indicators_unique}()},
+\code{\link{indicators}()},
+\code{\link{nearest_neighbours}()},
+\code{\link{profiles}()}
 }
 \concept{lookup functions}

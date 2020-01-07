@@ -11,7 +11,7 @@ nearest_neighbours(AreaCode, AreaTypeID = 101, measure, path)
 
 \item{AreaTypeID}{AreaTypeID of the nearest neighbours (see
 \code{\link{area_types}}) for IDs. Only returns information on AreaTypeIDs
-101, 102, 152, and 154}
+101, 102, 201, 202, 152, 153 and 154}
 
 \item{measure}{string; when AreaTypeID = 102 measure must be either "CIPFA"
 for CIPFA local authority nearest neighbours or "CSSN" for Children's
@@ -52,13 +52,15 @@ nearest_neighbours(AreaCode = "E38000002", AreaTypeID = 154)
   \code{\link{indicator_order}} for the order indicators are presented on the
   Fingertips website within a Domain
 
-Other lookup functions: \code{\link{area_types}},
-  \code{\link{category_types}},
-  \code{\link{deprivation_decile}},
-  \code{\link{indicator_areatypes}},
-  \code{\link{indicator_metadata}},
-  \code{\link{indicator_order}},
-  \code{\link{indicators_unique}},
-  \code{\link{indicators}}, \code{\link{profiles}}
+Other lookup functions: 
+\code{\link{area_types}()},
+\code{\link{category_types}()},
+\code{\link{deprivation_decile}()},
+\code{\link{indicator_areatypes}()},
+\code{\link{indicator_metadata}()},
+\code{\link{indicator_order}()},
+\code{\link{indicators_unique}()},
+\code{\link{indicators}()},
+\code{\link{profiles}()}
 }
 \concept{lookup functions}

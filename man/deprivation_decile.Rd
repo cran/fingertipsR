@@ -4,15 +4,15 @@
 \alias{deprivation_decile}
 \title{Deprivation deciles}
 \usage{
-deprivation_decile(AreaTypeID = 102, Year = 2015, path)
+deprivation_decile(AreaTypeID, Year = 2019, path)
 }
 \arguments{
-\item{AreaTypeID}{Integer value, limited to either 102 (counties and unitary
-authorities), 101 (local authority districts and unitary authorities), 7
-(General Practice) or 3 (Middle Super Output Layer); default is 102}
+\item{AreaTypeID}{Integer value, limited to one of 202, 201, 165, 154, 120,
+104, 102, 101, 46, 7, 6, 3, though not all are available for both years;
+default is 202}
 
 \item{Year}{Integer value, representing the year of IMD release to be
-applied, limited to either 2010 or 2015; default is 2015}
+applied, limited to 2015 or 2019}
 
 \item{path}{String; Fingertips API address. Function will default to the
 correct address}
@@ -26,14 +26,14 @@ Indices of Multiple Deprivation (IMD) produced by Department of Communities
 and Local Government
 }
 \details{
-This function uses the fingertips_data function to filter for the Index
-  of multiple deprivation score for the year and area supplied, and returns
-  the area code, along with the score and the deprivation decile, which is
-  calculated using the ntile function from dplyr
+This function uses the fingertips_data function to filter for the
+  Index of multiple deprivation score for the year and area supplied, and
+  returns the area code, along with the score and the deprivation decile,
+  which is calculated using the ntile function from dplyr
 }
 \examples{
-# Return 2015 deciles for counties and unitary authorities
-deprivation_decile(102, 2015)
+# Return 2015 deciles for counties and unitary authorities (post 4/19)
+deprivation_decile(202, 2015)
 }
 \seealso{
 \code{\link{indicators}} for indicator lookups,
@@ -43,17 +43,19 @@ deprivation_decile(102, 2015)
   \code{\link{category_types}} for category lookups,
   \code{\link{indicator_areatypes}} for indicators by area types lookups,
   \code{\link{indicators_unique}} for unique indicatorids and their names,
-  \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an area and
-  \code{\link{indicator_order}} for the order indicators are presented on the
-  Fingertips website within a Domain
+  \code{\link{nearest_neighbours}} for a vector of nearest neighbours for an
+  area and \code{\link{indicator_order}} for the order indicators are
+  presented on the Fingertips website within a Domain
 
-Other lookup functions: \code{\link{area_types}},
-  \code{\link{category_types}},
-  \code{\link{indicator_areatypes}},
-  \code{\link{indicator_metadata}},
-  \code{\link{indicator_order}},
-  \code{\link{indicators_unique}},
-  \code{\link{indicators}},
-  \code{\link{nearest_neighbours}}, \code{\link{profiles}}
+Other lookup functions: 
+\code{\link{area_types}()},
+\code{\link{category_types}()},
+\code{\link{indicator_areatypes}()},
+\code{\link{indicator_metadata}()},
+\code{\link{indicator_order}()},
+\code{\link{indicators_unique}()},
+\code{\link{indicators}()},
+\code{\link{nearest_neighbours}()},
+\code{\link{profiles}()}
 }
 \concept{lookup functions}

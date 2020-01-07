@@ -1,22 +1,22 @@
-## ----packages------------------------------------------------------------
+## ----packages-----------------------------------------------------------------
 library(fingertipsR)
 
-## ----indicators----------------------------------------------------------
+## ----indicators---------------------------------------------------------------
 inds <- indicators_unique()
 life_expectancy <- inds[grepl("life expectancy", tolower(inds$IndicatorName)),]
 
 knitr::kable(life_expectancy, row.names = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
-## ----area type-----------------------------------------------------------
+## ----area type----------------------------------------------------------------
 areaTypes <- area_types()
 DT::datatable(areaTypes, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
-## ----dist, echo=FALSE----------------------------------------------------
+## ----dist, echo=FALSE---------------------------------------------------------
 knitr::kable(areaTypes[areaTypes$AreaTypeID == 102,
                        c("ParentAreaTypeID","ParentAreaTypeName")], 
              row.names = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
-## ----extract-------------------------------------------------------------
+## ----extract------------------------------------------------------------------
 indicators <- c(90362, 90366)
 data <- fingertips_data(IndicatorID = indicators,
                         AreaTypeID = 102)
@@ -26,16 +26,16 @@ pander::pandoc.table(tail(data),
                      split.tables = 90, 
                      keep.line.breaks = TRUE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
-## ----refine variables----------------------------------------------------
+## ----refine variables---------------------------------------------------------
 cols <- c("IndicatorID", "AreaCode", "Sex", "Timeperiod", "Value")
 data <- data[data$AreaType == "County & UA (pre 4/19)" & data$Timeperiod == "2012 - 14", cols]
 
 
-## ----deprivation---------------------------------------------------------
+## ----deprivation--------------------------------------------------------------
 dep <- deprivation_decile(AreaTypeID = 102, Year = 2015)
 DT::datatable(dep, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
-## ----merge deprivation---------------------------------------------------
+## ----merge deprivation--------------------------------------------------------
 
 # merge deprivation onto data
 data <- merge(data, dep, by.x = "AreaCode", by.y = "AreaCode", all.x = TRUE)
@@ -44,7 +44,7 @@ data <- merge(data, dep, by.x = "AreaCode", by.y = "AreaCode", all.x = TRUE)
 data <- data[complete.cases(data),]
 DT::datatable(data, filter = "top", rownames = FALSE) #note, this line will only work in a markdown file (*.Rmd). It presents the table for a report
 
-## ----plot, fig.width=8, fig.height=5, message=FALSE----------------------
+## ----plot, fig.width=8, fig.height=5, message=FALSE---------------------------
 library(ggplot2)
 p <- ggplot(data, aes(x = IMDscore, y = Value, col = factor(IndicatorID)))
 p <- p + 

@@ -4,9 +4,17 @@
 \alias{fingertips_data}
 \title{Fingertips data}
 \usage{
-fingertips_data(IndicatorID = NULL, AreaCode = NULL, DomainID = NULL,
-  ProfileID = NULL, AreaTypeID = 102, ParentAreaTypeID = NULL,
-  categorytype = FALSE, rank = FALSE, path)
+fingertips_data(
+  IndicatorID = NULL,
+  AreaCode = NULL,
+  DomainID = NULL,
+  ProfileID = NULL,
+  AreaTypeID,
+  ParentAreaTypeID = NULL,
+  categorytype = FALSE,
+  rank = FALSE,
+  path
+)
 }
 \arguments{
 \item{IndicatorID}{Numeric vector, id of the indicator of interest}
@@ -21,10 +29,9 @@ fields it is recommended to complete this field as well as IndicatorID. If
 IndicatorID is populated, ProfileID can be ignored or must be the same
 length as IndicatorID (but can contain NAs).}
 
-\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type;
-default is 102 (Counties and Unitary Authorities). This argument also
-accepts "All", which returns data for all available area types for the
-indicator(s)}
+\item{AreaTypeID}{Numeric vector, the Fingertips ID for the area type. This
+argument accepts "All", which returns data for all available area
+types for the indicator(s), though this can take a long time to run}
 
 \item{ParentAreaTypeID}{Numeric vector, the comparator area type for the data
 extracted; if NULL the function will use the first record for the specified
@@ -60,7 +67,7 @@ Note, polarity of an indicator is not automatically returned (eg,
 \dontrun{
 # Returns data for the two selected domains at county and unitary authority geography
 doms <- c(1000049,1938132983)
-fingdata <- fingertips_data(DomainID = doms)
+fingdata <- fingertips_data(DomainID = doms, AreaTypeID = 202)
 
 # Returns data at local authority district geography (AreaTypeID = 101)
 # for the indicator with the id 22401
@@ -70,13 +77,17 @@ fingdata <- fingertips_data(22401, AreaTypeID = 101)
 # differences between profiles on the website
 # It is recommended to check the website to ensure consistency between your
 # data extract here and the polarity required
-fingdata <- fingertips_data(rep(90282,2), ProfileID = c(19,93), AreaCode = "E06000008")
+fingdata <- fingertips_data(rep(90282,2),
+                            ProfileID = c(19,93),
+                            AreaTypeID = 202,
+                            AreaCode = "E06000008")
 fingdata <- fingdata[order(fingdata$TimeperiodSortable, fingdata$Sex),]
 
 # Returns data for all available area types for an indicator
 fingdata <- fingertips_data(10101, AreaTypeID = "All")}
 }
 \seealso{
-Other data extract functions: \code{\link{fingertips_redred}}
+Other data extract functions: 
+\code{\link{fingertips_redred}()}
 }
 \concept{data extract functions}
