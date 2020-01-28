@@ -1,5 +1,11 @@
-# fingertipsR 1.0.0
+# fingertipsR 1.0.1
 
+* Improved flexibility of `deprivation_decile()` so new deprivation data can be drawn from website without being added to the package
+* url_only argument added to `fingertips_data()` function, allowing user to retrieve the API url(s) used to download their data
+
+# fingertipsR 1.0.0 (2020-01-08)
+
+* default value for `AreaTypeID` in `fingertips_data()` and `deprivation_decile()` removed (along with a helpful error message if `AreaTypeID` is missing)
 * progress bar added when AreaTypeID = "All" in `fingertips_data()`
 * fixed issue where GP deprivation_decile returned data with 0 records
 * added more allowable AreaTypes to `deprivation_decile()` function
