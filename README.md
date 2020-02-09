@@ -40,40 +40,17 @@ Get the latest released, stable version from CRAN:
 install.packages("fingertipsR")
 ```
 
-### With devtools
+### With remotes
 
 You can install the latest development version from github using
-[devtools](https://github.com/hadley/devtools):
+[remotes](https://github.com/r-lib/remotes):
 
 ``` r
-# install.packages("devtools")
+# install.packages("remotes")
 remotes::install_github("rOpenSci/fingertipsR",
                         build_vignettes = TRUE,
                         dependencies = "suggests")
 ```
-
-### From zip
-
-Download this repository from GitHub and either build from source or do
-the following, that also requires
-[devtools](https://github.com/hadley/devtools):
-
-``` r
-source <- devtools:::source_pkg("C:/path/to/fingertipsR-master")
-install(source)
-```
-
-### Base R instructions
-
-To install the package without the use of CRAN or
-[devtools](https://github.com/hadley/devtools), download the `.tar.gz`
-file and then run:
-
-``` r
-install.packages(path_to_file, repos = NULL, type="source")
-```
-
-Where `path_to_file` would represent the full path and file name.
 
 ## Example
 
@@ -107,10 +84,11 @@ function:
 profid <- 19
 inds <- indicators(ProfileID = profid)
 print(inds[grepl("Healthy", inds$IndicatorName), c("IndicatorID", "IndicatorName")])
-#> # A tibble: 1 x 2
+#> # A tibble: 2 x 2
 #>   IndicatorID IndicatorName                          
 #>         <int> <fct>                                  
 #> 1       90362 A01a - Healthy life expectancy at birth
+#> 2       93505 A01a - Healthy life expectancy at 65
 ```
 
 Healthy Life Expectancy at Birth has the `IndicatorID` equal to 90362.
