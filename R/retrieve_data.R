@@ -11,17 +11,17 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
         } else {
                 profileID_bit <- "&profile_id=%s"
         }
-        fd <- data.frame(IndicatorIDs = IndicatorIDs,
-                         ProfileIDs = ProfileIDs,
-                         ChildAreaTypeIDs = ChildAreaTypeIDs,
-                         ParentAreaTypeIDs = ParentAreaTypeIDs,
-                         path = path,
-                         profileID_bit = profileID_bit) %>%
+        fd <- tibble(IndicatorIDs = IndicatorIDs,
+                     ProfileIDs = ProfileIDs,
+                     ChildAreaTypeIDs = ChildAreaTypeIDs,
+                     ParentAreaTypeIDs = ParentAreaTypeIDs,
+                     path = path,
+                     profileID_bit = profileID_bit) %>%
                 unique()
 
         set_config(config(ssl_verifypeer = 0L))
 
-        get_data <- function(x, progress_bar) {
+        get_data <- function(x) {
                 if (!(x$ProfileIDs == "" | is.na(x$ProfileIDs))) {
                         x$profileID_bit <- sprintf(as.character(x$profileID_bit), x$ProfileIDs)
                 }
@@ -41,16 +41,17 @@ retrieve_indicator <- function(IndicatorIDs, ProfileIDs, ChildAreaTypeIDs, Paren
                  get_data)
 
         fingertips_data <- do.call("c", list(dd))
+        fingertips_data <- fingertips_data[!is.na(fingertips_data)]
         return(fingertips_data)
 }
 
 
 #' @importFrom httr set_config config
 retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        fd <- data.frame(DomainIDs = DomainIDs,
-                         ChildAreaTypeIDs = ChildAreaTypeIDs,
-                         ParentAreaTypeIDs = ParentAreaTypeIDs,
-                         path = path)
+        fd <- tibble(DomainIDs = DomainIDs,
+                     ChildAreaTypeIDs = ChildAreaTypeIDs,
+                     ParentAreaTypeIDs = ParentAreaTypeIDs,
+                     path = path)
         set_config(config(ssl_verifypeer = 0L))
         get_data <- function(x) {
                 dataurl <- "all_data/csv/by_group_id?child_area_type_id=%s&parent_area_type_id=%s&group_id=%s"
@@ -71,10 +72,10 @@ retrieve_domain <- function(DomainIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path
 
 #' @importFrom httr set_config config
 retrieve_profile <- function(ProfileIDs, ChildAreaTypeIDs, ParentAreaTypeIDs, path){
-        fd <- data.frame(ProfileIDs = ProfileIDs,
-                         ChildAreaTypeIDs = ChildAreaTypeIDs,
-                         ParentAreaTypeIDs = ParentAreaTypeIDs,
-                         path = path)
+        fd <- tibble(ProfileIDs = ProfileIDs,
+                     ChildAreaTypeIDs = ChildAreaTypeIDs,
+                     ParentAreaTypeIDs = ParentAreaTypeIDs,
+                     path = path)
         set_config(config(ssl_verifypeer = 0L))
         get_data <- function(x) {
                 dataurl <- "all_data/csv/by_profile_id?child_area_type_id=%s&parent_area_type_id=%s&profile_id=%s"
@@ -165,6 +166,7 @@ retrieve_all_area_data <- function(data, IndicatorID, ProfileID, AreaTypeID, Par
                                                                       ParentAreaTypeIDs = x[ParentAreaTypeID],
                                                                       path = path))
         }
+        names(all_area_data) <- NULL
         return(all_area_data)
 
 }

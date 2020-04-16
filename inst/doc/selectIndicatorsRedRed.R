@@ -16,7 +16,7 @@ inds <- c(90630, 10101, 10301,
 inds
 
 ## ----fingertips redred--------------------------------------------------------
-df <- fingertips_redred(inds, AreaTypeID = 102, Comparator = "England")
+df <- fingertips_redred(inds, AreaTypeID = 202, Comparator = "England")
 
 ## ----ggplot, fig.height=16, fig.width=8---------------------------------------
 df$IndicatorName <- sapply(strwrap(df$IndicatorName, 60, 
